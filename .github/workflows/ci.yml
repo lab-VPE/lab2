@@ -1,0 +1,23 @@
+name: CI
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Core must not reference UI, Export or Avalonia
+        run: |
+          if grep -qE "VirtualLab\.(UI|Export)|Avalonia" src/VirtualLab.Core/VirtualLab.Core.csproj; then
+            echo "Core has a forbidden reference"
+            exit 1
+          fi
+      - run: dotnet restore
+      - run: dotnet build --no-restore -c Release
+      - run: dotnet test --no-build -c Release

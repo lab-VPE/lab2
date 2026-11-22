@@ -1,0 +1,4 @@
+/src/VirtualLab.Core/    @логин-core
+/tests/                  @логин-core
+/src/VirtualLab.UI/      @логин-ui
+/src/VirtualLab.Export/  @логин-тимлида
